@@ -1,0 +1,65 @@
+-- 1.7.0 release 20030810 "Sandray" --
+
+ 008) Darrell Tangman <dgtangman@acm.org>
+      BUG. refine txt_help_thread_mark_article_read
+      FIX. lang.c
+
+ 007) Dirk Nimmich <nimmich@muenster.de>
+      BUG. attributes were ignored when mailing
+      FIX. proto.h, feed.c, post.c
+
+-- 1.6.1 release 20030810 "Mingulay" --
+
+ 006) Darrell Tangman <dgtangman@acm.org>
+      ADD. mark_ignore_tags
+      FIX. extern.h, tinrc.h, config.c, group.c, init.c, lang.c, thread.c
+           tincfg.tbl, tin.1, tin.5
+
+ 005) Dirk Nimmich <nimmich@muenster.de>
+      BUG. make install_sysdefs didn't honor $DESTDIR
+      BUG. filter on References didn't work on deep threads
+      BUG. upgrading from use_metamail=ON could lead to 
+           metamail_prog=--internal
+      BUG. lines that were exactly cCOLS bytes long introduced an extra line in
+           raw mode
+      BUG. word_h_display_marks=0 didn't work with !USE_CURSES
+      BUG. To/Cc/Bcc headers in postings were interpreted when using -M/-N
+           use MIME message/rfc822 wrapping now instead
+      ADD. enter no_posting mode when unable to get FQDN
+      ADD. no_posting command line option (-x)
+      ADD. RPM spec file
+      ADD. updated umlaut[es].txt
+      REM. $METAMAIL handling
+      FIX. config.c, curses.c, init.c, main.c, open.c, page.c, post.c, refs.c
+           save.c, tin.1, tin.spec, Makefile, src/Makefile.in, umlaut[es].txt
+
+ 004) Michael Velten <tin@michnet.de>
+      BUG. some info messages about (un)tagging wern't displayed
+      BUG. strip_blanks wasn't always honored
+      BUG. in some cases body-search couldn't be aborted
+      ADD. avoid some useless screen redraws
+      FIX. extern.h, cook.c, feed.c, group.c, lang.c, page.c, tags.c, thread.c
+
+ 003) Michael Bienia <michael@vorlon.ping.de>
+      BUG. possible bufferoverflows due to the use of vsprintf() instead of
+           vsnprintf()
+      BUG. wchar_t buffers weren't always '\0'-terminated
+      FIX. curses.c, getline.c, group.c, page.c, screen.c, tcurses.c
+           thread.c
+
+ 002) Urs Janssen <urs@tin.org>
+      ADD. missing const
+      ADD. updated german, french and estonian translations
+      ADD. missing includes for SEIUX
+      BUG. off by one malloc bug
+      REM. unused parameter
+      FIX. extern.h, proto.h, tin.h, filter.c, group.c, lang.c, main.c, page.c
+           post.c, de.po, fr.po. et.po, src/Makefile.in
+
+ 001) Toomas Soome <Toomas.Soome@microlink.ee>
+      ADD. updated estonian translation
+      FIX. et.po
+
+-- 1.6.0 release 20030714 "Vatersay" --
+
+For changes made till the 1.6.0 release look at CHANGES.old

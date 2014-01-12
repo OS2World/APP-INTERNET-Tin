@@ -1,0 +1,23 @@
+rem OS/2 environment variables that might be useful
+AMTAR=c:/gtak/tar
+BISON=bison
+CC=gcc
+CFLAGS=-O2 -Zexe
+EDITOR=pico -t
+GNULOCALEDIR=c:/emx/share/locale
+HOSTTYPE=i386-emx
+LANG=en_US
+LDFLAGS=-Zmtd
+LOCALEDIR=c:/emx/share/locale
+MACHTYPE=i386
+OSTYPE=os2
+RANLIB=ranlib
+TERM=ansi
+TERMINFO=c:/emx/share/terminfo
+TERMINFO_DIRS=c:/emx/share/terminfo
+TMPDIR=g:/temp
+TZ=CST6CDT
+VENDOR=intel
+rem These can't be set in lower case in OS/2 but help with configure
+ac_cv_sep=yes
+ac_executable_extensions=.exe

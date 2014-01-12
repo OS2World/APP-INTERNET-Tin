@@ -1,0 +1,302 @@
+.rn '' }`
+''' $RCSfile$$Revision$$Date$
+'''
+''' $Log$
+'''
+.de Sh
+.br
+.if t .Sp
+.ne 5
+.PP
+\fB\\$1\fR
+.PP
+..
+.de Sp
+.if t .sp .5v
+.if n .sp
+..
+.de Ip
+.br
+.ie \\n(.$>=3 .ne \\$3
+.el .ne 3
+.IP "\\$1" \\$2
+..
+.de Vb
+.ft CW
+.nf
+.ne \\$1
+..
+.de Ve
+.ft R
+
+.fi
+..
+'''
+'''
+'''     Set up \*(-- to give an unbreakable dash;
+'''     string Tr holds user defined translation string.
+'''     Bell System Logo is used as a dummy character.
+'''
+.tr \(*W-|\(bv\*(Tr
+.ie n \{\
+.ds -- \(*W-
+.ds PI pi
+.if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
+.if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\" diablo 12 pitch
+.ds L" ""
+.ds R" ""
+'''   \*(M", \*(S", \*(N" and \*(T" are the equivalent of
+'''   \*(L" and \*(R", except that they are used on ".xx" lines,
+'''   such as .IP and .SH, which do another additional levels of
+'''   double-quote interpretation
+.ds M" """
+.ds S" """
+.ds N" """""
+.ds T" """""
+.ds L' '
+.ds R' '
+.ds M' '
+.ds S' '
+.ds N' '
+.ds T' '
+'br\}
+.el\{\
+.ds -- \(em\|
+.tr \*(Tr
+.ds L" ``
+.ds R" ''
+.ds M" ``
+.ds S" ''
+.ds N" ``
+.ds T" ''
+.ds L' `
+.ds R' '
+.ds M' `
+.ds S' '
+.ds N' `
+.ds T' '
+.ds PI \(*p
+'br\}
+.\"	If the F register is turned on, we'll generate
+.\"	index entries out stderr for the following things:
+.\"		TH	Title 
+.\"		SH	Header
+.\"		Sh	Subsection 
+.\"		Ip	Item
+.\"		X<>	Xref  (embedded
+.\"	Of course, you have to process the output yourself
+.\"	in some meaninful fashion.
+.if \nF \{
+.de IX
+.tm Index:\\$1\t\\n%\t"\\$2"
+..
+.nr % 0
+.rr F
+.\}
+.TH TINEWS 1 "1.1.0" "June 26th, 2003" "Post and sign an article via NNTP"
+.UC
+.if n .hy 0
+.if n .na
+.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.de CQ          \" put $1 in typewriter font
+.ft CW
+'if n "\c
+'if t \\&\\$1\c
+'if n \\&\\$1\c
+'if n \&"
+\\&\\$2 \\$3 \\$4 \\$5 \\$6 \\$7
+'.ft R
+..
+.\" @(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2
+.	\" AM - accent mark definitions
+.bd B 3
+.	\" fudge factors for nroff and troff
+.if n \{\
+.	ds #H 0
+.	ds #V .8m
+.	ds #F .3m
+.	ds #[ \f1
+.	ds #] \fP
+.\}
+.if t \{\
+.	ds #H ((1u-(\\\\n(.fu%2u))*.13m)
+.	ds #V .6m
+.	ds #F 0
+.	ds #[ \&
+.	ds #] \&
+.\}
+.	\" simple accents for nroff and troff
+.if n \{\
+.	ds ' \&
+.	ds ` \&
+.	ds ^ \&
+.	ds , \&
+.	ds ~ ~
+.	ds ? ?
+.	ds ! !
+.	ds /
+.	ds q
+.\}
+.if t \{\
+.	ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h"|\\n:u"
+.	ds ` \\k:\h'-(\\n(.wu*8/10-\*(#H)'\`\h'|\\n:u'
+.	ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'^\h'|\\n:u'
+.	ds , \\k:\h'-(\\n(.wu*8/10)',\h'|\\n:u'
+.	ds ~ \\k:\h'-(\\n(.wu-\*(#H-.1m)'~\h'|\\n:u'
+.	ds ? \s-2c\h'-\w'c'u*7/10'\u\h'\*(#H'\zi\d\s+2\h'\w'c'u*8/10'
+.	ds ! \s-2\(or\s+2\h'-\w'\(or'u'\v'-.8m'.\v'.8m'
+.	ds / \\k:\h'-(\\n(.wu*8/10-\*(#H)'\z\(sl\h'|\\n:u'
+.	ds q o\h'-\w'o'u*8/10'\s-4\v'.4m'\z\(*i\v'-.4m'\s+4\h'\w'o'u*8/10'
+.\}
+.	\" troff and (daisy-wheel) nroff accents
+.ds : \\k:\h'-(\\n(.wu*8/10-\*(#H+.1m+\*(#F)'\v'-\*(#V'\z.\h'.2m+\*(#F'.\h'|\\n:u'\v'\*(#V'
+.ds 8 \h'\*(#H'\(*b\h'-\*(#H'
+.ds v \\k:\h'-(\\n(.wu*9/10-\*(#H)'\v'-\*(#V'\*(#[\s-4v\s0\v'\*(#V'\h'|\\n:u'\*(#]
+.ds _ \\k:\h'-(\\n(.wu*9/10-\*(#H+(\*(#F*2/3))'\v'-.4m'\z\(hy\v'.4m'\h'|\\n:u'
+.ds . \\k:\h'-(\\n(.wu*8/10)'\v'\*(#V*4/10'\z.\v'-\*(#V*4/10'\h'|\\n:u'
+.ds 3 \*(#[\v'.2m'\s-2\&3\s0\v'-.2m'\*(#]
+.ds o \\k:\h'-(\\n(.wu+\w'\(de'u-\*(#H)/2u'\v'-.3n'\*(#[\z\(de\v'.3n'\h'|\\n:u'\*(#]
+.ds d- \h'\*(#H'\(pd\h'-\w'~'u'\v'-.25m'\f2\(hy\fP\v'.25m'\h'-\*(#H'
+.ds D- D\\k:\h'-\w'D'u'\v'-.11m'\z\(hy\v'.11m'\h'|\\n:u'
+.ds th \*(#[\v'.3m'\s+1I\s-1\v'-.3m'\h'-(\w'I'u*2/3)'\s-1o\s+1\*(#]
+.ds Th \*(#[\s+2I\s-2\h'-\w'I'u*3/5'\v'-.3m'o\v'.3m'\*(#]
+.ds ae a\h'-(\w'a'u*4/10)'e
+.ds Ae A\h'-(\w'A'u*4/10)'E
+.ds oe o\h'-(\w'o'u*4/10)'e
+.ds Oe O\h'-(\w'O'u*4/10)'E
+.	\" corrections for vroff
+.if v .ds ~ \\k:\h'-(\\n(.wu*9/10-\*(#H)'\s-2\u~\d\s+2\h'|\\n:u'
+.if v .ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'\v'-.4m'^\v'.4m'\h'|\\n:u'
+.	\" for low resolution devices (crt and lpr)
+.if \n(.H>23 .if \n(.V>19 \
+\{\
+.	ds : e
+.	ds 8 ss
+.	ds v \h'-1'\o'\(aa\(ga'
+.	ds _ \h'-1'^
+.	ds . \h'-1'.
+.	ds 3 3
+.	ds o a
+.	ds d- d\h'-1'\(ga
+.	ds D- D\h'-1'\(hy
+.	ds th \o'bp'
+.	ds Th \o'LP'
+.	ds ae ae
+.	ds Ae AE
+.	ds oe oe
+.	ds Oe OE
+.\}
+.rm #[ #] #H #V #F C
+.SH "NAME"
+tinews.pl \- Post and sign an article via NNTP
+.SH "SYNOPSIS"
+\fBtinews.pl\fR < \fIinput\fR
+.SH "DESCRIPTION"
+\fBtinews.pl\fR reads an article on STDIN, signs it via \fBpgp\fR(1) or
+\fBgpg\fR(1) and posts it to a newsserver.
+.PP
+If the article contains To:, Cc: or Bcc: headers and mail-actions are
+configured it will automatically add a \*(L"Posted-And-Mailed: yes\*(R" header
+to the article and send out the mail-copies.
+.SH "OPTIONS"
+None.
+.SH "EXIT STATUS"
+The following exit values are returned:
+.Ip "\ 0 " 4
+Successful completion.
+.Ip "!=0" 4
+An error occurred.
+.SH "ENVIRONMENT"
+.Ip "\fB$\s-1NNTPSERVER\s0\fR" 4
+Set to override the \s-1NNTP\s0 server configured in the source.
+.Ip "\fB$\s-1PGPPASS\s0\fR" 4
+Set to override the passphrase configured in the source (used for
+\fBpgp\fR(1)\-2.6.3).
+.Ip "\fB$\s-1PGPPASSFILE\s0\fR" 4
+Passphrase file used for \fBpgp\fR(1) or \fBgpg\fR(1).
+.Ip "\fB$\s-1SIGNER\s0\fR" 4
+Set to override the user-id for signing configured in the source. If you
+neither set \fB$\s-1SIGNER\s0\fR nor configure it in the source the contents of the
+From:\-field will be used.
+.Ip "\fB$\s-1REPLYTO\s0\fR" 4
+Set the article header field Reply-To: to the return address specified by
+the variable if there isn't already a Reply-To: header in the article.
+.Ip "\fB$\s-1ORGANIZATION\s0\fR" 4
+Set the article header field Organization: to the contents of the variable
+if there isn't already a Organization: header in the article.
+.SH "FILES"
+.Ip "\fIpgptmp.txt\fR" 4
+Temporary file used to store the reformated article
+.Ip "\fIpgptmp.txt.asc\fR" 4
+Temporary file used to store the reformated and signed article
+.Ip "\fI$\s-1PGPPASSFILE\s0\fR" 4
+The passphrase file to be used for \fBpgp\fR(1) or \fBgpg\fR(1).
+.SH "SECURITY"
+If interactive usage is configured and \fBtinews.pl\fR prompts for the
+NNTP\-password the input is echoed to the terminal.
+.PP
+If you've configured or entered a password, even if the variable that
+contained that password has been erased, it may be possible for someone to
+find that password, in plaintext, in a core dump. In short, if serious
+security is an issue, don't use this script.
+.SH "NOTES"
+\fBtinews.pl\fR is designed to be used with \fBpgp\fR(1)\-2.6.3,
+\fBpgp\fR(1)\-5 and \fBgpg\fR(1).
+.PP
+\fBtinews.pl\fR requires the following standard modules to be installed:
+\fBNet::NNTP\fR(3pm), \fBTime::Local\fR(3pm) and \fBTerm::Readline\fR(3pm).
+.SH "AUTHOR"
+Urs Janssen <urs@tin.org>,
+Marc Brockschmidt <marc@marcbrockschmidt.de>
+.SH "SEE ALSO"
+\fBpgp\fR(1), \fBgpg\fR(1), \fBpgps\fR(1), \fBNet::NNTP\fR(3pm), \fBTime::Local\fR(3pm),
+\fBTerm::Readline\fR(3pm)
+
+.rn }` ''
+.IX Title "TINEWS 1"
+.IX Name "tinews.pl - Post and sign an article via NNTP"
+
+.IX Header "NAME"
+
+.IX Header "SYNOPSIS"
+
+.IX Header "DESCRIPTION"
+
+.IX Header "OPTIONS"
+
+.IX Header "EXIT STATUS"
+
+.IX Item "\ 0 "
+
+.IX Item "!=0"
+
+.IX Header "ENVIRONMENT"
+
+.IX Item "\fB$\s-1NNTPSERVER\s0\fR"
+
+.IX Item "\fB$\s-1PGPPASS\s0\fR"
+
+.IX Item "\fB$\s-1PGPPASSFILE\s0\fR"
+
+.IX Item "\fB$\s-1SIGNER\s0\fR"
+
+.IX Item "\fB$\s-1REPLYTO\s0\fR"
+
+.IX Item "\fB$\s-1ORGANIZATION\s0\fR"
+
+.IX Header "FILES"
+
+.IX Item "\fIpgptmp.txt\fR"
+
+.IX Item "\fIpgptmp.txt.asc\fR"
+
+.IX Item "\fI$\s-1PGPPASSFILE\s0\fR"
+
+.IX Header "SECURITY"
+
+.IX Header "NOTES"
+
+.IX Header "AUTHOR"
+
+.IX Header "SEE ALSO"
+

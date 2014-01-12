@@ -1,0 +1,265 @@
+# Sample keymap file
+#
+# This file contains the default key mappings
+#
+#
+# Global keys
+
+PageDown3			SPACE
+ShellEscape			!
+SetRange			#
+LastPage			$
+ToggleColor			&
+LastViewed			-
+SearchSubjF			/
+SearchSubjB			?
+SearchAuthB			A
+SearchBody			B
+SearchRepeat			\
+ToggleHelpDisplay		H
+ToggleInverseVideo		I
+LookupMessage			L
+OptionMenu			M
+Postponed2			O
+QuitTin				Q
+DisplayPostHist			W
+FirstPage			^
+SearchAuthF			a
+PageUp3				b
+Help				h
+ToggleInfoLastLine		i
+Down2				j
+Up2				k
+Print				o
+Quit				q
+Version				v
+Post				w
+Pipe				|
+PageUp				^B
+PageDown			^D
+PageDown2			^F
+RedrawScr			^L
+Down				^N
+Postponed			^O
+Up				^P
+PageUp2				^U
+
+#####
+
+ConfigSelect			^J
+ConfigSelect2			^M
+ConfigLastPage2			G
+ConfigNoSave			Q
+ConfigFirstPage2		g
+
+#####
+
+FeedTag				T
+FeedArt				a
+FeedHot				h
+FeedPat				p
+FeedRepost			r
+FeedSupersede			s
+FeedThd				t
+
+#####
+
+FilterEdit			e
+FilterSave			s
+
+#####
+
+GroupAutoSel			^A
+GroupNextUnreadArtOrGrp		TAB
+GroupReadBasenote		^J
+GroupKill			^K
+GroupReadBasenote2		^M
+GroupSelThd			*
+GroupDoAutoSel			+
+GroupToggleThdSel		.
+GroupSelThdIfUnreadSelected	;
+GroupSelPattern			=
+GroupReverseSel			@
+GroupCatchupNextUnread		C
+GroupEditFilter			E
+GroupToggleGetartLimit		G
+GroupMarkThdRead		K
+GroupNextUnreadArt		N
+GroupPrevUnreadArt		P
+GroupBugReport			R
+GroupAutoSave		S
+GroupTagParts			T
+GroupUntag			U
+GroupMarkUnselArtRead		X
+GroupMarkThdUnread		Z
+GroupQuickAutoSel		[
+GroupQuickKill			]
+GroupCatchup			c
+GroupToggleSubjDisplay		d
+GroupGoto			g
+GroupListThd			l
+GroupMail			m
+GroupNextGroup			n
+GroupPrevGroup			p
+GroupToggleReadUnread		r
+GroupSave			s
+GroupTag			t
+GroupToggleThreading		u
+GroupRepost			x
+GroupMarkArtUnread		z
+GroupUndoSel			~
+
+#####
+
+HelpLastPage2			G
+HelpFirstPage2			g
+
+#####
+
+NrctblCreate			c
+NrctblDefault			d
+NrctblAlternative		a
+NrctblQuit			q
+
+#####
+
+PageAutoSel			^A
+PageReplyQuoteHeaders		^E
+PagePGPCheckArticle		^G
+PageToggleHeaders		^H
+PageNextUnread			TAB
+PageNextThd			^J
+PageAutoKill			^K
+PageNextThd2			^M
+PageToggleTabs			^T
+PageFollowupQuoteHeaders	^W
+PageToggleTex2iso		"
+PageToggleRot			%
+PageToggleUue			(
+PageReveal			)
+PageSkipIncludedText		:
+PageTopThd			<
+PageBotThd			>
+PageCatchupNextUnread		C
+PageCancel			D
+PageEditFilter			E
+PageFollowup			F
+PageLastPage			G
+PageKillThd			K
+PageNextUnreadArt		N
+PagePrevUnreadArt		P
+PageReply			R
+PageAutoSave		S
+PageGroupSel			T
+PageViewUrl			U
+PageViewAttach			V
+PageMarkThdUnread		Z
+PageQuickAutoSel		[
+PageQuickKill			]
+PageToggleHighlight		_
+PageCatchup			c
+PageEditArticle			e
+PageFollowupQuote		f
+PageFirstPage			g
+PageListThd			l
+PageMail			m
+PageNextArt			n
+PagePrevArt			p
+PageReplyQuote			r
+PageSave			s
+PageTag				t
+PageGotoParent			u
+PageRepost			x
+PageMarkArtUnread		z
+
+#####
+
+PgpEncSign			b
+PgpEncrypt			e
+PgpIncludekey			i
+PgpSign				s
+
+#####
+
+PostCancel			d
+PostEdit			e
+PostPGP				g
+PostIspell			i
+PostContinue			c
+PostAbort			a
+PostIgnore			i
+PostMail			m
+PostPost2			y
+PostPost3			p
+PostSend			s
+PostSend2			y
+PostSupersede			s
+PostPostpone			o
+
+#####
+
+PostponeOverride		Y
+PostponeAll			A
+
+#####
+
+PromptYes			y
+PromptNo			n
+
+#####
+
+SaveAppendFile			a
+SaveOverwriteFile		o
+
+#####
+
+PProcShar			s
+PProcUUDecode			u
+PProcNone			n
+
+#####
+
+SelectEnterNextUnreadGrp	TAB
+SelectReadGrp			^J
+SelectReadGrp2			^M
+SelectResetNewsrc		^R
+SelectCatchupNextUnread		C
+SelectNextUnreadGrp		N
+SelectBugReport			R
+SelectSubscribePat		S
+SelectUnsubscribePat		U
+SelectQuitNoWrite		X
+SelectSyncWithActive		Y
+SelectMarkGrpUnread2		Z
+SelectCatchup			c
+SelectToggleDescriptions	d
+SelectGoto			g
+SelectMoveGrp			m
+SelectEnterNextUnreadGrp2	n
+SelectToggleReadDisplay		r
+SelectSubscribe			s
+SelectUnsubscribe		u
+SelectYankActive		y
+SelectMarkGrpUnread		z
+
+#####
+
+ThreadReadNextArtOrThread	TAB
+ThreadReadArt			^J
+ThreadReadArt2			^M
+ThreadSelArt			*
+ThreadToggleArtSel		.
+ThreadReverseSel		@
+ThreadCatchupNextUnread		C
+ThreadMarkArtRead		K
+ThreadBugReport			R
+ThreadAutoSave		S
+ThreadUntag			U
+ThreadMarkThdUnread		Z
+ThreadCatchup			c
+ThreadToggleSubjDisplay		d
+ThreadMail			m
+ThreadSave			s
+ThreadTag			t
+ThreadMarkArtUnread		z
+ThreadUndoSel			~

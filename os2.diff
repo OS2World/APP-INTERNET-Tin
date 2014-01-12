@@ -1,0 +1,809 @@
+Only in tin-1.7.0-os2/: cfg.cmd
+Only in tin-1.7.0-os2/include: autoconf.h.os2
+diff -rwC2 tin-1.7.0/include/autoconf.hin tin-1.7.0-os2/include/autoconf.hin
+*** tin-1.7.0/include/autoconf.hin	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/include/autoconf.hin	Wed Sep  3 22:54:56 2003
+***************
+*** 62,65 ****
+--- 62,69 ----
+  #	endif /* !M_UNIX */
+  
++ #	if defined(__EMX__) && !defined(M_OS2)
++ #		define M_OS2
++ #	endif /* __EMX__ && ! M_OS2 */
++ 
+  /*
+   * SCO requires special handling
+diff -rwC2 tin-1.7.0/include/tin.h tin-1.7.0-os2/include/tin.h
+*** tin-1.7.0/include/tin.h	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/include/tin.h	Sun Aug 31 23:33:40 2003
+***************
+*** 97,101 ****
+  
+  #ifndef LOCALEDIR
+! #	define LOCALEDIR "/usr/share/locale"
+  #endif /* !LOCALEDIR */
+  
+--- 97,101 ----
+  
+  #ifndef LOCALEDIR
+! #	define LOCALEDIR "e:/tcpip/locale"
+  #endif /* !LOCALEDIR */
+  
+***************
+*** 177,180 ****
+--- 177,184 ----
+  
+  #include <stdio.h>
++ #ifdef M_OS2
++ #	undef P_tmpdir
++ #	include <share.h>
++ #endif /* M_OS2 */
+  #ifdef HAVE_ERRNO_H
+  #	include	<errno.h>
+***************
+*** 244,247 ****
+--- 248,258 ----
+  #ifdef HAVE_STDLIB_H
+  #	include <stdlib.h>
++ #	ifdef M_OS2
++ #		undef getcwd
++ #		undef chdir
++ #		define getcwd _getcwd2
++ #		define chdir _chdir2
++ #		define usleep(t)   _sleep2(((t)+500)/1000)
++ #	endif /* M_OS2 */
+  #endif /* HAVE_STDLIB_H */
+  
+***************
+*** 258,261 ****
+--- 269,276 ----
+  #	ifdef HAVE_STRING_H
+  #		include <string.h>
++ #		ifdef M_OS2
++ #			define strcasecmp stricmp
++ #			define strncasecmp strnicmp
++ #		endif /* M_OS2 */
+  #	else
+  #		ifdef HAVE_STRINGS_H
+***************
+*** 562,565 ****
+--- 577,589 ----
+  #		define DEFAULT_PRINTER	"/usr/bin/lpr"
+  #	endif /* linux */
++ #	ifdef M_OS2
++ #		define DEFAULT_PRINTER  "print"
++ #		ifndef DEFAULT_MAILER
++ #			define DEFAULT_MAILER  "sendmail"
++ #		endif /* DEFAULT_MAILER */
++ #		ifndef DEFAULT_SHELL
++ #			define DEFAULT_SHELL  "cmd"
++ #		endif /* DEFAULT_SHELL */
++ #	endif /* M_OS2 */
+  #	ifdef M_AMIGA
+  #		ifndef DEFAULT_EDITOR
+***************
+*** 677,685 ****
+  #	define DEFAULT_SAVE_NUM	10
+  #else
+! #	define DEFAULT_ARTICLE_NUM	1200
+! #	define DEFAULT_SAVE_NUM	30
+  #endif /* SMALL_MEMORY_MACHINE */
+! #define DEFAULT_ACTIVE_NUM	1800
+! #define DEFAULT_NEWNEWS_NUM	5
+  
+  #ifdef VMS
+--- 701,713 ----
+  #	define DEFAULT_SAVE_NUM	10
+  #else
+! //#	define DEFAULT_ARTICLE_NUM	1200
+! #	define DEFAULT_ARTICLE_NUM	3600
+! //#	define DEFAULT_SAVE_NUM	30
+! #	define DEFAULT_SAVE_NUM	150
+  #endif /* SMALL_MEMORY_MACHINE */
+! //#define DEFAULT_ACTIVE_NUM	1800
+! #define DEFAULT_ACTIVE_NUM	5400
+! //#define DEFAULT_NEWNEWS_NUM	5
+! #define DEFAULT_NEWNEWS_NUM	25
+  
+  #ifdef VMS
+***************
+*** 1948,1951 ****
+--- 1976,1982 ----
+  #	define MAILER_FORMAT		"%M -oi -t < %F"
+  #	define TMPDIR	get_val("TMPDIR", _PATH_TMP)
++ #	ifdef M_OS2
++ #		define P_tmpdir get_val("TMPDIR", _PATH_TMP)
++ #	endif /* M_OS2 */
+  #	ifdef HAVE_KEY_PREFIX
+  #		define KEY_PREFIX		0x8f: case 0x9b
+diff -rwC2 tin-1.7.0/include/version.h tin-1.7.0-os2/include/version.h
+*** tin-1.7.0/include/version.h	Sun Aug 10 09:31:02 2003
+--- tin-1.7.0-os2/include/version.h	Sun Aug 31 16:17:54 2003
+***************
+*** 72,75 ****
+--- 72,78 ----
+  #			endif /*__WINNT__ */
+  #		endif /* __CYGWIN__ */
++ #		ifdef M_OS2
++ #			define OSNAME "OS/2"
++ #		endif /* M_OS2 */
+  #		ifndef OSNAME
+  #			define OSNAME	"UNIX"
+diff -rwC2 tin-1.7.0/install.sh tin-1.7.0-os2/install.sh
+*** tin-1.7.0/install.sh	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/install.sh	Sun Aug 31 16:22:12 2003
+***************
+*** 38,42 ****
+  chownprog="${CHOWNPROG-chown}"
+  chgrpprog="${CHGRPPROG-chgrp}"
+! stripprog="${STRIPPROG-strip}"
+  rmprog="${RMPROG-rm}"
+  mkdirprog="${MKDIRPROG-mkdir}"
+--- 38,42 ----
+  chownprog="${CHOWNPROG-chown}"
+  chgrpprog="${CHGRPPROG-chgrp}"
+! stripprog="/emx/bin/emxbind -s"
+  rmprog="${RMPROG-rm}"
+  mkdirprog="${MKDIRPROG-mkdir}"
+***************
+*** 222,226 ****
+  # Make a temp file name in the proper directory.
+  
+! 	dsttmp=$dstdir/#inst.$$#
+  
+  # Move or copy the file name to the temp name
+--- 222,226 ----
+  # Make a temp file name in the proper directory.
+  
+! 	dsttmp=$dstdir/#inst.$$#.exe
+  
+  # Move or copy the file name to the temp name
+***************
+*** 243,247 ****
+  # Now rename the file to the real destination.
+  
+! 	$doit $rmcmd -f $dstdir/$dstfile &&
+  	$doit $mvcmd $dsttmp $dstdir/$dstfile
+  
+--- 243,247 ----
+  # Now rename the file to the real destination.
+  
+! 	$doit $rmcmd $dstdir/$dstfile &&
+  	$doit $mvcmd $dsttmp $dstdir/$dstfile
+  
+diff -rwC2 tin-1.7.0/intl/localealias.c tin-1.7.0-os2/intl/localealias.c
+*** tin-1.7.0/intl/localealias.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/intl/localealias.c	Tue Sep  2 09:50:04 2003
+***************
+*** 24,27 ****
+--- 24,31 ----
+  #endif
+  
++ #	if defined(__EMX__) && !defined(M_OS2)
++ #		define M_OS2
++ #	endif /* __EMX__ && ! M_OS2 */
++ 
+  #ifdef HAVE_CONFIG_H
+  # include <autoconf.h>
+***************
+*** 56,59 ****
+--- 60,68 ----
+  #  define strchr index
+  # endif
++ #ifdef M_OS2
++ #	define strcasecmp stricmp
++ #	define _strcasecmp _stricmp
++ #	define strncasecmp strnicmp
++ #endif /* M_OS2 */
+  #endif
+  
+***************
+*** 66,70 ****
+--- 75,81 ----
+     because some ANSI C functions will require linking with this object
+     file and the name space must not be polluted.  */
++ #ifndef M_OS2
+  # define strcasecmp __strcasecmp
++ #endif /* M_OS2 */
+  
+  # ifndef mempcpy
+***************
+*** 378,382 ****
+--- 389,397 ----
+  {
+  #if defined _LIBC || defined HAVE_STRCASECMP
++ #ifdef M_OS2
++   return stricmp (map1->alias, map2->alias);
++ #else
+    return strcasecmp (map1->alias, map2->alias);
++ #endif /* M_OS2 */
+  #else
+    const unsigned char *p1 = (const unsigned char *) map1->alias;
+Only in tin-1.7.0-os2/intl: Makefile.os2
+Only in tin-1.7.0-os2/intl: os2compat.c
+Only in tin-1.7.0-os2/intl: os2compat.h
+Only in tin-1.7.0-os2/intl: osdep.c
+diff -rwC2 tin-1.7.0/libcanlock/Build tin-1.7.0-os2/libcanlock/Build
+*** tin-1.7.0/libcanlock/Build	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/libcanlock/Build	Sun Aug 31 16:30:22 2003
+***************
+*** 2,9 ****
+  
+  if [ me$1ow = mecleanow ] ; then
+! 	rm *.o *.a endian endian.h canlocktest hmactest *~ core
+  else
+  #	CC="cc"
+! 	CC="${CC-cc}"
+  	echo 'Determining endianness...'
+  	${CC} -o endian endian.c
+--- 2,10 ----
+  
+  if [ me$1ow = mecleanow ] ; then
+! 	rm *.o *.a endian endian.h canlocktest hmactest *~ core *.exe
+  else
+  #	CC="cc"
+! #	CC="${CC-cc}"
+! 	CC="gcc -Zexe -Zmtd -O2 -march=athlon-xp"
+  	echo 'Determining endianness...'
+  	${CC} -o endian endian.c
+***************
+*** 33,37 ****
+  
+  	echo "Indexing..."
+! 	ranlib libcanlock.a
+  
+  	echo "Building test programs..."
+--- 34,40 ----
+  
+  	echo "Indexing..."
+! #	ranlib libcanlock.a
+! 	ar s libcanlock.a
+! 	cp -p libcanlock.a canlock.a
+  
+  	echo "Building test programs..."
+Only in tin-1.7.0-os2/: Makefile.os2
+Only in tin-1.7.0-os2/: os2.diff
+Only in tin-1.7.0-os2/pcre: Makefile.os2
+Only in tin-1.7.0-os2/po: Makefile.os2
+diff -rwC2 tin-1.7.0/src/art.c tin-1.7.0-os2/src/art.c
+*** tin-1.7.0/src/art.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/art.c	Sun Aug 31 16:47:04 2003
+***************
+*** 1457,1461 ****
+--- 1457,1463 ----
+  		}
+  	}
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH));
++ #endif /* !M_OS2 */
+  	fclose(fp);
+  }
+diff -rwC2 tin-1.7.0/src/attrib.c tin-1.7.0-os2/src/attrib.c
+*** tin-1.7.0/src/attrib.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/attrib.c	Sun Aug 31 16:46:58 2003
+***************
+*** 705,709 ****
+--- 705,711 ----
+  
+  	/* rename_file() preserves mode, so this is safe */
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR));
++ #endif /* !M_OS2 */
+  
+  	if (ferror(fp) || fclose(fp))
+diff -rwC2 tin-1.7.0/src/auth.c tin-1.7.0-os2/src/auth.c
+*** tin-1.7.0/src/auth.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/auth.c	Sun Aug 31 20:46:56 2003
+***************
+*** 168,171 ****
+--- 168,172 ----
+  		}
+  
++ #ifndef M_OS2
+  		if (S_ISREG(statbuf.st_mode) && (statbuf.st_mode|S_IRUSR|S_IWUSR) != (S_IRUSR|S_IWUSR|S_IFREG)) {
+  			error_message(_(txt_error_insecure_permissions), line, statbuf.st_mode);
+***************
+*** 176,179 ****
+--- 177,181 ----
+  			 */
+  		}
++ #endif /* !M_OS2 */
+  
+  		/*
+diff -rwC2 tin-1.7.0/src/config.c tin-1.7.0-os2/src/config.c
+*** tin-1.7.0/src/config.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/config.c	Sun Aug 31 16:46:50 2003
+***************
+*** 1334,1338 ****
+--- 1334,1340 ----
+  	}
+  
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR)); /* rename_file() preserves mode */
++ #endif /* !M_OS2 */
+  
+  	if (ferror(fp) || fclose(fp))
+***************
+*** 2951,2955 ****
+--- 2953,2959 ----
+  			fprintf(fp, "last_newnews=%lu (%s)\n", (unsigned long int) newnews[i].time, timestring);
+  
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR)); /* rename_file() preserves mode */
++ #endif /* !M_OS2 */
+  
+  	if (ferror(fp) || fclose(fp))
+diff -rwC2 tin-1.7.0/src/debug.c tin-1.7.0-os2/src/debug.c
+*** tin-1.7.0/src/debug.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/debug.c	Sun Aug 31 16:46:36 2003
+***************
+*** 104,108 ****
+--- 104,110 ----
+  	if ((fp = fopen(file, "a+")) != NULL) {
+  		fprintf(fp,"%s: %s\n", func, line);
++ #ifndef M_OS2
+  		fchmod(fileno(fp), (S_IRUGO|S_IWUGO));
++ #endif /* !M_OS2 */
+  		fclose(fp);
+  	}
+***************
+*** 161,165 ****
+--- 163,169 ----
+  /*		fprintf(fp,"thread=[%s]  prev=[%s]  status=[%s]\n", (s->thread == ART_NORMAL ? "ART_NORMAL" : "ART_EXPIRED"), s->prev, bool_unparse(s->status)); */
+  		fflush(fp);
++ #ifndef M_OS2
+  		fchmod(fileno(fp), (S_IRUGO|S_IWUGO));
++ #endif /* !M_OS2 */
+  		fclose(fp);
+  	}
+***************
+*** 197,201 ****
+--- 201,207 ----
+  			debug_print_attributes(group->attribute, fp);
+  		}
++ #ifndef M_OS2
+  		fchmod(fileno(fp), (S_IRUGO|S_IWUGO));
++ #endif /* !M_OS2 */
+  		fclose(fp);
+  	}
+***************
+*** 260,264 ****
+--- 266,272 ----
+  			else
+  				fprintf(fp, "%10s:%-4d Realloc %6ld. Total %d\n", pcFile, iLine, (long) iSize, iTotal);
++ #ifndef M_OS2
+  			fchmod(fileno(fp), (S_IRUGO|S_IWUGO));
++ #endif /* !M_OS2 */
+  			fclose(fp);
+  		}
+***************
+*** 317,321 ****
+--- 325,331 ----
+  		fprintf(fp, "*** END GLOBAL FILTER ***\n");
+  
++ #ifndef M_OS2
+  		fchmod(fileno(fp), (S_IRUGO|S_IWUGO));
++ #endif /* !M_OS2 */
+  		fclose(fp);
+  	}
+***************
+*** 338,342 ****
+--- 348,354 ----
+  	if ((fp = fopen(file, "a+")) != NULL) {
+  		fprintf(fp,"\n%s\n", comment);
++ #ifndef M_OS2
+  		fchmod(fileno(fp), (S_IRUGO|S_IWUGO));
++ #endif /* !M_OS2 */
+  		fclose(fp);
+  	}
+***************
+*** 374,378 ****
+--- 386,392 ----
+  		}
+  		debug_print_newsrc(&group->newsrc, fp);
++ #ifndef M_OS2
+  		fchmod(fileno(fp), (S_IRUGO|S_IWUGO));
++ #endif /* !M_OS2 */
+  		fclose(fp);
+  	}
+diff -rwC2 tin-1.7.0/src/filter.c tin-1.7.0-os2/src/filter.c
+*** tin-1.7.0/src/filter.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/filter.c	Mon Sep  1 05:19:26 2003
+***************
+*** 1840,1846 ****
+  						case FILTER_LINES_EQ:
+  							if (arts[i].line_count == ptr[j].lines_num) {
+! /*
+  wait_message(1, "FILTERED Lines arts[%d] == [%d]", arts[i].line_count, ptr[j].lines_num);
+! */
+  								SET_FILTER(group, i, j);
+  							}
+--- 1840,1846 ----
+  						case FILTER_LINES_EQ:
+  							if (arts[i].line_count == ptr[j].lines_num) {
+! /* comment out the wait_message lines */
+  wait_message(1, "FILTERED Lines arts[%d] == [%d]", arts[i].line_count, ptr[j].lines_num);
+! 
+  								SET_FILTER(group, i, j);
+  							}
+***************
+*** 1849,1855 ****
+  						case FILTER_LINES_LT:
+  							if (arts[i].line_count < ptr[j].lines_num) {
+! /*
+  wait_message(1, "FILTERED Lines arts[%d] < [%d]", arts[i].line_count, ptr[j].lines_num);
+! */
+  								SET_FILTER(group, i, j);
+  							}
+--- 1849,1855 ----
+  						case FILTER_LINES_LT:
+  							if (arts[i].line_count < ptr[j].lines_num) {
+! 
+  wait_message(1, "FILTERED Lines arts[%d] < [%d]", arts[i].line_count, ptr[j].lines_num);
+! 
+  								SET_FILTER(group, i, j);
+  							}
+***************
+*** 1858,1864 ****
+  						case FILTER_LINES_GT:
+  							if (arts[i].line_count > ptr[j].lines_num) {
+! /*
+  wait_message(1, "FILTERED Lines arts[%d] > [%d]", arts[i].line_count, ptr[j].lines_num);
+! */
+  								SET_FILTER(group, i, j);
+  							}
+--- 1858,1864 ----
+  						case FILTER_LINES_GT:
+  							if (arts[i].line_count > ptr[j].lines_num) {
+! 
+  wait_message(1, "FILTERED Lines arts[%d] > [%d]", arts[i].line_count, ptr[j].lines_num);
+! 
+  								SET_FILTER(group, i, j);
+  							}
+diff -rwC2 tin-1.7.0/src/init.c tin-1.7.0-os2/src/init.c
+*** tin-1.7.0/src/init.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/init.c	Sun Aug 31 16:46:14 2003
+***************
+*** 826,830 ****
+--- 826,832 ----
+  		if ((fp = fopen(posted_info_file, "w")) != NULL) {
+  			fprintf(fp, _(txt_posted_info_file));
++ #ifndef M_OS2
+  			fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR));
++ #endif /* !M_OS2 */
+  			fclose(fp);
+  		}
+diff -rwC2 tin-1.7.0/src/Makefile.in tin-1.7.0-os2/src/Makefile.in
+*** tin-1.7.0/src/Makefile.in	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/Makefile.in	Sun Aug 31 16:48:34 2003
+***************
+*** 102,106 ****
+  ETAGS	= etags
+  LINT	= @LINT@
+! LN	= @LN_S@
+  INSTALL	= @INSTALL@
+  @SET_MAKE@
+--- 102,106 ----
+  ETAGS	= etags
+  LINT	= @LINT@
+! LN	= cp -p
+  INSTALL	= @INSTALL@
+  @SET_MAKE@
+Only in tin-1.7.0-os2/src: Makefile.os2
+diff -rwC2 tin-1.7.0/src/memory.c tin-1.7.0-os2/src/memory.c
+*** tin-1.7.0/src/memory.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/memory.c	Sun Aug 31 16:50:42 2003
+***************
+*** 120,124 ****
+  	void)
+  {
+! 	max_art += max_art >> 1;		/* increase by 50% */
+  	arts = my_realloc(arts, sizeof(*arts) * max_art);
+  	base = my_realloc(base, sizeof(long) * max_art);
+--- 120,125 ----
+  	void)
+  {
+! /*	max_art += max_art >> 1;		*//* increase by 50% */
+! 	max_art += max_art;		/* increase by 100% */
+  	arts = my_realloc(arts, sizeof(*arts) * max_art);
+  	base = my_realloc(base, sizeof(long) * max_art);
+***************
+*** 130,134 ****
+  	void)
+  {
+! 	max_active += max_active >> 1;		/* increase by 50% */
+  	if (active == NULL) {
+  		active = my_malloc(sizeof(*active) * max_active);
+--- 131,136 ----
+  	void)
+  {
+! /*	max_active += max_active >> 1;		*//* increase by 50% */
+! 	max_active += max_active;		/* increase by 100% */
+  	if (active == NULL) {
+  		active = my_malloc(sizeof(*active) * max_active);
+diff -rwC2 tin-1.7.0/src/misc.c tin-1.7.0-os2/src/misc.c
+*** tin-1.7.0/src/misc.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/misc.c	Sun Aug 31 21:17:02 2003
+***************
+*** 221,226 ****
+--- 221,228 ----
+  	ret = copy_fp(fp_in, fp_out);
+  
++ #ifndef M_OS2
+  	if ((fd = fileno(fp_out)) != -1)
+  		fchmod(fd, mode);
++ #endif /* !M_OS2 */
+  
+  	fclose(fp_out);
+***************
+*** 712,717 ****
+--- 714,721 ----
+  			copy_fp(fp_old, fp_new);
+  
++ #ifndef M_OS2
+  			if ((fd = fileno(fp_new)) != -1)
+  				fchmod(fd, mode);
++ #endif /* !M_OS2 */
+  
+  			fclose(fp_new);
+***************
+*** 1139,1143 ****
+--- 1143,1149 ----
+  	} else {
+  		if ((fp = fopen(the_lock_file, "w")) != NULL) {
++ #ifndef M_OS2
+  			fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR));
++ #endif /* !M_OS2 */
+  			(void) time(&epoch);
+  			fprintf(fp, "%6d  %s\n", (int) process_id, ctime(&epoch));
+***************
+*** 2254,2263 ****
+--- 2260,2273 ----
+  	}
+  
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR)); /* rename_file() preserves mode */
++ #endif /* !M_OS2 */
+  
+  	if (ferror(fp) || fclose(fp)) {
+  		error_message(_(txt_filesystem_full), local_input_history_file);
+  		/* fix modes for all pre 1.4.1 local_input_history_file files */
++ #ifndef M_OS2
+  		chmod(local_input_history_file, (mode_t) (S_IRUSR|S_IWUSR));
++ #endif /* !M_OS2 */
+  	} else
+  		rename_file(file_tmp, local_input_history_file);
+diff -rwC2 tin-1.7.0/src/newsrc.c tin-1.7.0-os2/src/newsrc.c
+*** tin-1.7.0/src/newsrc.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/newsrc.c	Sun Aug 31 16:45:52 2003
+***************
+*** 213,218 ****
+--- 213,220 ----
+  
+  	if ((fp_op = fopen(newnewsrc, "w" FOPEN_OPTS)) != NULL) {
++ #ifndef M_OS2
+  		if (newsrc_mode)
+  			fchmod(fileno(fp_op), newsrc_mode);
++ #endif /* !M_OS2 */
+  
+  		while ((line = tin_fgets(fp_ip, FALSE)) != NULL)
+***************
+*** 295,300 ****
+--- 297,304 ----
+  		return;
+  
++ #ifndef M_OS2
+  	if (newsrc_mode)
+  		fchmod(fileno(fp_newsrc), newsrc_mode);
++ #endif /* !M_OS2 */
+  
+  	/* TODO: test me! */
+***************
+*** 372,377 ****
+--- 376,383 ----
+  		return;
+  
++ #ifndef M_OS2
+  	if (newsrc_mode)
+  		fchmod(fileno(newfp), newsrc_mode);
++ #endif /* !M_OS2 */
+  
+  	if ((fp = fopen(newsrc, "r")) != NULL) {
+***************
+*** 427,432 ****
+--- 433,440 ----
+  
+  	if (!no_write && (newfp = fopen(newnewsrc, "w" FOPEN_OPTS)) != NULL) {
++ #ifndef M_OS2
+  		if (newsrc_mode)
+  			fchmod(fileno(newfp), newsrc_mode);
++ #endif /* !M_OS2 */
+  
+  		if ((fp = fopen(newsrc, "r")) != NULL) {
+***************
+*** 466,471 ****
+--- 474,481 ----
+  
+  	if ((newfp = fopen(newnewsrc, "w" FOPEN_OPTS)) != NULL) {
++ #ifndef M_OS2
+  		if (newsrc_mode)
+  			fchmod(fileno(newfp), newsrc_mode);
++ #endif /* !M_OS2 */
+  
+  		if ((fp = fopen(newsrc, "r")) != NULL) {
+***************
+*** 989,994 ****
+--- 999,1006 ----
+  	newnewsrc_created = TRUE;
+  
++ #ifndef M_OS2
+  	if (newsrc_mode)
+  		fchmod(fileno(fp_out), newsrc_mode);
++ #endif /* !M_OS2 */
+  
+  #ifdef VMS
+diff -rwC2 tin-1.7.0/src/nrctbl.c tin-1.7.0-os2/src/nrctbl.c
+*** tin-1.7.0/src/nrctbl.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/nrctbl.c	Sun Aug 31 16:45:32 2003
+***************
+*** 72,76 ****
+--- 72,78 ----
+  
+  	fprintf(fp, _(txt_nrctbl_info), PRODUCT, VERSION);
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR));
++ #endif /* !M_OS2 */
+  	fclose(fp);
+  }
+diff -rwC2 tin-1.7.0/src/post.c tin-1.7.0-os2/src/post.c
+*** tin-1.7.0/src/post.c	Sun Aug 10 08:32:08 2003
+--- tin-1.7.0-os2/src/post.c	Sun Aug 31 20:39:12 2003
+***************
+*** 586,591 ****
+--- 586,596 ----
+  		return rval;
+  
++ #ifdef M_OS2
++    if ((fp_out = _fsopen(the_mailbox, "a+", SH_DENYWR)) != NULL) {
++ #else
+  	if ((fp_out = fopen(the_mailbox, "a+")) != NULL) {
++ #endif /* M_OS2 */
+  		fd = fileno(fp_out);
++ #ifndef M_OS2
+  		/* TODO: move the retry/error stuff into a function? */
+  		while (retrys-- && fd_lock(fd, FALSE))
+***************
+*** 606,609 ****
+--- 611,615 ----
+  			return rval;
+  		}
++ #endif /* !M_OS2 */
+  
+  		if (mmdf)
+***************
+*** 636,642 ****
+  
+  		fflush(fp_out);
+  		if (fd_unlock(fd) || !dot_unlock(the_mailbox))
+  			wait_message(4, _(txt_error_cant_unlock), the_mailbox);
+! 
+  		fclose(fp_out);
+  		rval = TRUE;
+--- 642,649 ----
+  
+  		fflush(fp_out);
++ #ifndef M_OS2
+  		if (fd_unlock(fd) || !dot_unlock(the_mailbox))
+  			wait_message(4, _(txt_error_cant_unlock), the_mailbox);
+! #endif /* !M_OS2 */
+  		fclose(fp_out);
+  		rval = TRUE;
+***************
+*** 1815,1819 ****
+--- 1822,1828 ----
+  	}
+  
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR));
++ #endif /* !M_OS2 */
+  
+  	get_from_name(from_name, psGrp);
+***************
+*** 2519,2523 ****
+--- 2528,2534 ----
+  	}
+  
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR));
++ #endif /* !M_OS2 */
+  
+  	psGrp = group_find(group);
+***************
+*** 2690,2694 ****
+--- 2701,2707 ----
+  	}
+  
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR));
++ #endif /* !M_OS2 */
+  
+  	if (!tinrc.use_mailreader_i) {	/* tin should start editor */
+***************
+*** 3325,3329 ****
+--- 3338,3344 ----
+  	}
+  
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR));
++ #endif /* !M_OS2 */
+  
+  #ifdef FORGERY
+***************
+*** 3535,3539 ****
+--- 3550,3556 ----
+  		return ret_code;
+  	}
++ #ifndef M_OS2
+  	fchmod(fileno(fp), (mode_t) (S_IRUSR|S_IWUSR));
++ #endif /* !M_OS2 */
+  
+  	if (supersede) {
+***************
+*** 3838,3845 ****
+--- 3855,3868 ----
+  							PRODUCT, VERSION, RELEASEDATE, RELEASENAME, OSNAME,
+  							system_info.version, system_info.release);
++       else
++ #        ifdef M_OS2
++                      fprintf(fp_out, "User-Agent: %s/%s-%s (\"%s\") (%s) (%s v%s (%s))\n",
++                         PRODUCT, VERSION, RELEASEDATE, RELEASENAME, OSNAME,
++                         system_info.sysname, system_info.version, system_info.machine);
+  #        else
+                       fprintf(fp_out, "User-Agent: %s/%s-%s (\"%s\") (%s) (%s/%s (%s))\n",
+                          PRODUCT, VERSION, RELEASEDATE, RELEASENAME, OSNAME,
+                          system_info.sysname, system_info.release, system_info.machine);
++ #        endif /* M_OS2 */
+  #		endif /* SEIUX */
+  #	endif /* _AIX */
+diff -rwC2 tin-1.7.0/src/save.c tin-1.7.0-os2/src/save.c
+*** tin-1.7.0/src/save.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/save.c	Sun Aug 31 17:03:48 2003
+***************
+*** 565,569 ****
+--- 565,573 ----
+  	for (i = 0, j = 0; i < len; i++, j++) {
+  		buf[j] = path[i];
++ #ifdef M_OS2
++       if (i + 1 < len && path[i + 1] == DIRSEP && path[i] != ':') {
++ #else
+  		if (i + 1 < len && path[i + 1] == DIRSEP) {
++ #endif /* M_OS2 */
+  			buf[j + 1] = '\0';
+  			if (stat(buf, &st) == -1) {
+***************
+*** 906,913 ****
+--- 910,919 ----
+  			if (state == END) {
+  				/* set the mode after getting rid of dangerous bits */
++ #ifndef M_OS2
+  				if (!(mode &= ~(S_ISUID|S_ISGID|S_ISVTX)))
+  					mode = (S_IRUSR|S_IWUSR);
+  
+  				fchmod(fileno(fp_out), mode);
++ #endif /* !M_OS2 */
+  
+  				fclose(fp_out);
+diff -rwC2 tin-1.7.0/src/tmpfile.c tin-1.7.0-os2/src/tmpfile.c
+*** tin-1.7.0/src/tmpfile.c	Sun Aug 10 08:01:06 2003
+--- tin-1.7.0-os2/src/tmpfile.c	Sun Aug 31 16:44:42 2003
+***************
+*** 80,84 ****
+--- 80,86 ----
+  		u = umask(0);
+  		(void) umask(u);
++ #ifndef M_OS2
+  		(void) fchmod(fd, 0666 & ~u);
++ #endif /* !M_OS2 */
+  	}
+  

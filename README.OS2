@@ -1,0 +1,30 @@
+Not much to say... This is the tin source after I hacked 
+around on it for a while, not really knowing what I was 
+doing.  The first glaring problem was _fchmod(), which EMX 
+doesn't support.  I made a change to save.c to support OS/2 
+drive letters.  File locking doesn't work, but in the only 
+important case I found the EMX _fsopen() function, which is 
+fine.
+
+I found an annoying number of incompatible
+intl/libintl/gnulibintl libs and dlls out there; same with
+libiconv.  I couldn't get the current versions of gettext or
+libiconv to compile, so I decided to do without.  Ncurses5
+is swell, though.
+
+If anyone can improve on this I'd be delighted.  ;)
+
+Source (currently 1.6.0) is at 
+
+ftp://ftp.tin.org/pub/news/clients/tin/stable/tin-current.tar.gz
+
+This version is
+
+ftp://ftp.tin.org/pub/news/clients/tin/unstable/tin-1.7.0.tar.gz
+
+
+-Mike Forester
+forester@panix.com
+4 Sept. 2003
+
+
